@@ -26,6 +26,14 @@ def draw_label(name, pos, screen, font):
 	screen.blit(text_surface, pos)
 	draw_text(screen, font, name, 14, pos[0]+7, pos[1]+8, (255,255,255))
 
+def color_from_supply(supply):
+	rgb = int((supply / 5_000_000) * 255)
+	if rgb > 240:
+		rgb = 240
+	elif rgb < 40:
+		rgb = 40
+	return (rgb,rgb,rgb)
+
 # City Functions.
 def create_cities():
 	# Initialise all the cities using the City class.
