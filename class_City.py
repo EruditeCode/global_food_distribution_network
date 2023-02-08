@@ -11,6 +11,7 @@ class City:
 		self.production = None
 		self.surplus = None
 		self.live_surplus = None
+		self.connections = {}
 
 	def update(self, mouse_pos, screen, font):
 		self.update_color()
