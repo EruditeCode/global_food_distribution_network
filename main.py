@@ -45,7 +45,8 @@ def main():
 		for city in cities:
 			for conn in city.connections.keys():
 				connection = city.connections[conn]
-				pygame.draw.aaline(screen, (255,0,0), city.pos, connection[0].pos)
+				color = sf.color_from_supply(connection[1])
+				pygame.draw.aaline(screen, color, city.pos, connection[0].pos)
 
 		# Draw the cities as circles.
 		mouse_pos = pygame.mouse.get_pos()
