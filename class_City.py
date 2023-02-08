@@ -1,3 +1,5 @@
+# City class to support the global food distribution network program.
+
 import support_functions as sf
 
 class City:
