@@ -51,3 +51,34 @@ def create_cities():
 			city.live_surplus = city.surplus
 
 	return cities
+
+def find_city_with_largest_surplus(cities):
+	max_city, surplus = None, 0
+	for city in cities:
+		if city.live_surplus > surplus:
+			max_city, surplus = city, city.live_surplus
+	return max_city
+
+def select_closest_city_in_need(supplier, cities):
+	recipient, min_dist = None, 10_000_000
+	for city in cities:
+		if city.live_surplus < 0 and euclidean_distance(supplier.pos, city.pos) < min_dist:
+			recipient, min_dist = city, euclidean_distance(supplier.pos, city.pos)
+	return recipient
+
+def transfer_food_to_recipient(supplier, close_city):
+	if abs(close_city.live_surplus) <= supplier.live_surplus:
+		stock = abs(close_city.live_surplus)
+	else:
+		stock = supplier.live_surplus
+	move_food(supplier, close_city, stock)
+
+def move_food(supplier, recipient, stock):
+	supplier.live_surplus -= stock
+	recipient.live_surplus += stock
+	if supplier.name in recipient.connections.keys():
+		supplier.connections[recipient.name][1] += stock
+		recipient.connections[supplier.name][1] += stock
+	else:
+		supplier.connections[recipient.name] = [recipient, stock]
+		recipient.connections[supplier.name] = [supplier, stock]
