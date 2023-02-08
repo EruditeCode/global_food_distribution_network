@@ -2,7 +2,6 @@ import pygame
 import support_functions as sf
 from sys import exit
 
-
 def main():
 	pygame.init()
 	WIDTH, HEIGHT = 1280, 650
