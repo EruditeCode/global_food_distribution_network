@@ -17,6 +17,8 @@ def main():
 	cities = sf.create_cities()
 
 	is_supplying = False
+	is_optimising = False
+	city_count = 0
 	while True:
 		# MANAGING USER INPUT
 		for event in pygame.event.get():
@@ -25,8 +27,11 @@ def main():
 				exit()
 			if event.type == pygame.MOUSEBUTTONUP:
 				is_supplying = not is_supplying
+			if event.type == pygame.KEYDOWN:
+				if event.key == pygame.K_SPACE:
+					is_optimising = not is_optimising
 
-		# RUN SUPPLYING ALGORITHM
+		# RUN SUPPLYING OR OPTIMISING ALGORITHMS
 		supplier = None
 		if is_supplying:
 			supplier = sf.find_city_with_largest_surplus(cities)
@@ -36,6 +41,15 @@ def main():
 					sf.transfer_food_to_recipient(supplier, close_city)
 				else:
 					is_supplying = False
+
+		if is_optimising:
+			supplier = sf.find_supplier(cities, city_count)
+			if supplier:
+				sf.find_and_replace_supplier_to_city(supplier, cities)
+			if city_count == len(cities)-1:
+				city_count = 0
+			else:
+				city_count += 1
 		
 
 		# DISPLAYING OBJECTS
@@ -48,7 +62,7 @@ def main():
 				color = sf.color_from_supply(connection[1])
 				pygame.draw.aaline(screen, color, city.pos, connection[0].pos)
 
-		# Draw the cities as circles.
+		# Draw and update the cities as circles.
 		mouse_pos = pygame.mouse.get_pos()
 		for city in cities:
 			pygame.draw.circle(screen, city.color, city.pos, city.rad)
