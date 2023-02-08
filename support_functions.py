@@ -90,3 +90,45 @@ def move_food(supplier, recipient, stock):
 	else:
 		supplier.connections[recipient.name] = [recipient, stock]
 		recipient.connections[supplier.name] = [supplier, stock]
+
+def find_supplier(cities, city_count):
+	for city in cities[city_count:]:
+		if city.surplus > 0 and city.live_surplus > 1_000_000:
+			return city
+
+def find_and_replace_supplier_to_city(supplier, cities):
+	checked_list = []
+	for i in range(0, len(cities)):
+		city = optimise_closest_city_in_need(supplier, cities, checked_list)
+		if city:
+			furthest_city = find_furthest_connection(city)
+			if euclidean_distance(supplier.pos, city.pos) < euclidean_distance(furthest_city.pos, city.pos):
+				replace_supplier(supplier, city, furthest_city, city.connections[furthest_city.name][1])
+				return #continue
+		checked_list.append(city)
+
+def optimise_closest_city_in_need(supplier, cities, checked_list):
+	recipient, min_dist = None, 10_000_000
+	for city in cities:
+		if city not in checked_list and city.surplus < 0 and euclidean_distance(supplier.pos, city.pos) < min_dist:
+			recipient, min_dist = city, euclidean_distance(supplier.pos, city.pos)
+	return recipient
+
+def find_furthest_connection(city):
+	max_city, max_distance = None, 0
+	for conn in city.connections:
+		if euclidean_distance(city.pos, city.connections[conn][0].pos) > max_distance:
+			max_distance = euclidean_distance(city.pos, city.connections[conn][0].pos)
+			max_city = city.connections[conn][0]
+	return max_city
+
+def replace_supplier(supplier, city, furthest_city, stock):
+	if stock <= supplier.live_surplus:
+		move_food(supplier, city, stock)
+		move_food(furthest_city, city, -stock)
+		del furthest_city.connections[city.name]
+		del city.connections[furthest_city.name]
+	else:
+		stock = supplier.live_surplus
+		move_food(supplier, city, stock)
+		move_food(furthest_city, city, -stock)
