@@ -1,3 +1,5 @@
+# A global food distribution network model.
+
 import pygame
 import support_functions as sf
 from sys import exit
