@@ -1,3 +1,5 @@
+# Functions to support the global food distribution program.
+
 import pygame
 import json
 from class_City import City
