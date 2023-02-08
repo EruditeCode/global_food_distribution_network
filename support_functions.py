@@ -43,9 +43,11 @@ def create_cities():
 			city.population = int(populations[city.name])
 			city.production = int(production[city.name])
 			city.surplus = city.production - int(city.population * 0.55)
+			city.live_surplus = city.surplus
 		else:
 			city.population = 100_000
 			city.production = 0
 			city.surplus = -55000
+			city.live_surplus = city.surplus
 
 	return cities
