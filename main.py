@@ -15,6 +15,8 @@ def main():
 	bg = pygame.image.load('bg.png').convert_alpha()
 	bg = pygame.transform.scale(bg, (WIDTH, HEIGHT))
 
+	cities = sf.create_cities()
+
 	while True:
 		# MANAGING USER INPUT
 		for event in pygame.event.get():
@@ -24,6 +26,10 @@ def main():
 
 		# DISPLAYING OBJECTS
 		screen.blit(bg, (0, 0))
+
+		# Draw the cities as circles.
+		for city in cities:
+			pygame.draw.circle(screen, city.color, city.pos, city.rad)
 
 		pygame.display.update()
 		clock.tick(30)
