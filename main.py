@@ -28,8 +28,10 @@ def main():
 		screen.blit(bg, (0, 0))
 
 		# Draw the cities as circles.
+		mouse_pos = pygame.mouse.get_pos()
 		for city in cities:
 			pygame.draw.circle(screen, city.color, city.pos, city.rad)
+			city.update(mouse_pos, screen, font_name)
 
 		pygame.display.update()
 		clock.tick(30)
