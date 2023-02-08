@@ -12,7 +12,18 @@ class City:
 		self.surplus = None
 
 	def update(self, mouse_pos, screen, font):
+		self.update_color()
+		self.update_radius()
 		self.show_label_on_hover(mouse_pos, screen, font)
+
+	def update_color(self):
+		pass
+
+	def update_radius(self):
+		if self.production // 15_000_000 < 2:
+			self.rad = 2
+		else:
+			self.rad = self.production // 15_000_000
 
 	def show_label_on_hover(self, mouse_pos, screen, font):
 		if sf.euclidean_distance(mouse_pos, self.pos) < self.rad:
