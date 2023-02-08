@@ -7,6 +7,10 @@ class City:
 		self.color = (255,255,255)
 		self.rad = 2
 
+		self.population = None
+		self.production = None
+		self.surplus = None
+
 	def update(self, mouse_pos, screen, font):
 		self.show_label_on_hover(mouse_pos, screen, font)
 
