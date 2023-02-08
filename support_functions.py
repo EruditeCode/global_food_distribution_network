@@ -1,4 +1,5 @@
 import pygame
+import json
 from class_City import City
 from map_ref import indices
 
@@ -29,4 +30,23 @@ def draw_label(name, pos, screen, font):
 def create_cities():
 	# Initialise all the cities using the City class.
 	cities = [City(i[0], i[1], i[2]) for i in indices]
+
+	# Load the population and production data.
+	with open('country_populations_main.json', 'r') as file:
+		populations = json.load(file)
+	with open('country_production_main.json', 'r') as file:
+		production = json.load(file)
+
+	# Update each city with the loaded information.
+	for city in cities:
+		if city.name in populations.keys():
+			city.population = int(populations[city.name])
+			city.production = int(production[city.name])
+			city.surplus = city.production - int(city.population * 0.55)
+		else:
+			print(city.name)
+			city.population = 100_000
+			city.production = 0
+			city.surplus = -55000
+
 	return cities
